@@ -1,0 +1,5 @@
+bs4==0.0.1
+beautifulsoup4==4.6.0
+lxml==4.2.2
+mechanize==0.3.6
+requests==2.19.1
