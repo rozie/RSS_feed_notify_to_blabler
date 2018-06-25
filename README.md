@@ -26,7 +26,7 @@ Adjust following constants in script
 RSS_URL - URL to your WordPress RSS feed
 BLABLER_LOGIN - your blabler.pl login
 BLABLER_PASSWORD - your blabler.pl password
-You may also want to adjust text variable in post_to_blabler function.
+You may also want to adjust text variable in main function.
 
 
 Usage

@@ -17,12 +17,8 @@ def write_posted_entry(url, posted_file):
         file.write(url + '\n')
 
 
-def post_to_blabler(url, category):
+def post_to_blabler(login, password, text):
     success = False
-    if category:
-        text = "Nowy wpis na #blog.u w kategorii #{} {}".format(category, url)
-    else:
-        text = "Nowy wpis na #blog.u {}".format(url)
 
     BLABLER_URL = 'https://blabler.pl/logowanie.html'
     BLABLER_LOGOUT = 'https://blabler.pl/wyloguj.html'
@@ -32,8 +28,8 @@ def post_to_blabler(url, category):
     br.open(BLABLER_URL)
 
     br.form = list(br.forms())[0]
-    br.form['name'] = BLABLER_LOGIN
-    br.form['pass'] = BLABLER_PASSWORD
+    br.form['name'] = login
+    br.form['pass'] = password
     result = br.submit()
     if result.code == 200:
         br.form = list(br.forms())[0]
@@ -62,7 +58,11 @@ def main():
         url = item.link.text
         category = item.category.text
         if url not in posted_urls:
-            if post_to_blabler(url, category):
+            if category:
+                text = "Nowy wpis na #blog.u w kategorii #{} {}".format(category, url)
+            else:
+                text = "Nowy wpis na #blog.u {}".format(url)
+            if post_to_blabler(BLABLER_LOGIN, BLABLER_PASSWORD, text):
                 write_posted_entry(url, POSTED_ENTRIES)
             break
 
