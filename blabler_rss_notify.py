@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
-import mechanize
 import argparse
+
+import requests
+
+import mechanicalsoup
 from bs4 import BeautifulSoup
 
 POSTED_ENTRIES = 'posted_blog_entries.txt'
@@ -16,31 +18,30 @@ def write_posted_entry(url, posted_file):
     with open(posted_file, 'a') as file:
         file.write(url + '\n')
 
-
 def post_to_blabler(login, password, text):
     success = False
 
     BLABLER_URL = 'https://blabler.pl/logowanie.html'
     BLABLER_LOGOUT = 'https://blabler.pl/wyloguj.html'
 
-    br = mechanize.Browser()
+    br = mechanicalsoup.StatefulBrowser()
     br.addheaders = [('User-agent', 'Linux Mozilla')]
     br.open(BLABLER_URL)
 
-    br.form = list(br.forms())[0]
-    br.form['name'] = login
-    br.form['pass'] = password
-    result = br.submit()
-    if result.code == 200:
-        br.form = list(br.forms())[0]
-        br.form['text'] = text
-        result_entry = br.submit()
-        if result_entry.code == 200:
+    br.select_form('form[action="/logowanie.html"]')
+    br["name"] = login
+    br["pass"] = password
+    result = br.submit_selected()
+    if result.status_code == 200:
+        br.select_form('form[action="/post.html"]')
+        br["text"] = text
+        result_entry = br.submit_selected()
+        if result_entry.status_code == 200:
             success = True
         # logout
         result_logout = requests.get(BLABLER_LOGOUT)
         if result_logout.status_code != 200:
-            print "Logout failed. Irrevelant."
+            print("Logout failed. Irrevelant.")
     return success
 
 

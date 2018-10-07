@@ -5,18 +5,18 @@ blabler.pl service
 
 Descrition
 ---------
-Simple Python script using WWW mechanize to post notification about new blog
+Simple Python script using MechanicalSoup to post notification about new blog
 posts to blabler.pl service. Posts one notification at the time, uses plain
 text file to keep information about already posted entries. Tested only with
 WordPress RSS feed.
 
 Service blabler.pl does not provide API and it's not actively developed, so
-decided to use WWW mechanize and skip configuration file.
+decided to use MechanicalSoup and skip configuration file.
 
 
 Requirements
 ---------
-- Pytnon 2.7
+- Pytnon 3.x (tested with Python 3.5)
 - modules listed in requirements.txt
 
 
